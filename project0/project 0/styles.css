@@ -1,0 +1,60 @@
+.navbar-google{
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.navbar-item-google{
+    margin: 10px;
+}
+
+/* unvisited link */
+a:link {
+    color: black;
+    text-decoration: none;  
+  }
+
+  /* visited link */
+  a:visited {
+    color: black;
+  }
+
+  /* mouse over link */
+  a:hover {
+    color: black;
+  }
+
+  /* selected link */
+  a:active {
+    color: black;
+  }
+
+
+  .center-div{
+    display: flex;
+    justify-content: center;
+  
+  }
+  
+  #Googleinputtext{
+    border-radius: 25px;
+    
+  }
+
+  .textaligncenter
+  {
+    text-align: center;
+  }
+
+  body{
+    vertical-align: middle !important; 
+    height: 100%;
+    min-height: 600px;
+  }
+
+
+  .searchbutton{
+    background-color: blue;
+    color: white;
+  }
