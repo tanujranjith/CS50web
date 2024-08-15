@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Create a listing!</h2>
+
+
+    <form action="{% url 'newlisting' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            Enter The Listing Name
+            <input autofocus class="form-control" type="text" name="Listingname" placeholder="Listing name">
+        </div>
+
+
+        <div class="form-group">
+            Enter The Listing Description
+            <input class="form-control" type="text" name="Description" placeholder="Description">
+        </div>
+
+
+        <div class="form-group">
+            Enter The Listings starting bid
+            <input class="form-control" type="number" name="Startbid" placeholder="Starting bid">
+        </div>
+
+
+        <div class="form-group">
+            Enter A Url For A Picture (Optional)
+            <input class="form-control" type="text" name="Imageurl" placeholder="Image Url">
+        </div>
+
+
+        <div class="form-group">
+            Is The Listing Active?
+            <select class="form-control" name="Active">
+                <option value="True">Yes</option>
+                <option value="False">No</option>
+            </select>
+        </div>
+
+
+            <div class="form-group">
+                Choose The Listing Category
+                <select class="form-control" name="Categorys">
+                    {%  for option in Category %}
+                        <option value="{{option}}">{{option}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+        <input  type="submit" value="Submit new listing">
+    </form>
+
+    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+
+{% endblock %}

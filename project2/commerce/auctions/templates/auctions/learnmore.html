@@ -1,0 +1,94 @@
+
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h3 class="card-title">Listing:{{ listing.Listingname }}</h3>
+
+<div class="body">
+
+
+<div class="card" style="width: 40rem;">
+    <img class="card-img-top" src="{{ listing.Imageurl }}" alt="Card image cap">
+
+    <h4 class="card-text">{{ listing.Description }}</h4> 
+    <br>
+    <h5 class="card-title">Current Price: ${{ listing.Startbid.amount }}</h5>
+
+
+
+
+
+
+
+
+    <br>
+    
+<form action="{% url 'placebid' id=listing.id%}" method="POST">
+    <div class="form-group">
+        {% csrf_token %}
+        <h4>Place a bid!</h4>
+        <input class="form-control" type="number" min="0" name="placenewbid" placeholder="Place a bid">
+        <input  type="submit" value="Submit Your Bid">
+    </div>
+</form>
+
+{% if not listing.Active and user == listing.Startbid.bidder  %}
+<h1>Congrats You Won The Auction</h1>
+{%  endif %}
+
+
+{% if islistingowner  %}
+
+<form action="{% url 'endlisting' id=listing.id    %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">End/Close Listing</button>
+</form>
+
+{% endif  %}
+
+
+<div class="body">
+
+    {% if user.is_authenticated %}
+        {% if userselectlisting  %}             
+            <form action="{% url 'removewatchlist' id=listing.id    %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Remove listing from watchlist</button>
+            </form>
+        {%else %}             
+            <form action="{% url 'addwatchlist' id=listing.id    %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Add listing to watchlist</button>
+            </form>      
+        {% endif %}
+    {% endif %}
+
+    <br>
+<h2>Place A Comment!</h2>
+{% if user.is_authenticated %}
+
+<form action = "{% url 'placeacomment' id=listing.id %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="newcommentsplaced" placehold="Place A Comment!">
+    <button type="submit" >Submit Comment!</button>
+</form>
+{% endif %}
+<br>
+<h4>
+    Exsiting comments
+</h4>
+<ul>
+    {% for comment in totalcomments  %}
+        <li>{{ comment.content }}</li>
+    {% endfor  %}
+</ul>
+
+</div>
+
+
+
+
+
+{% endblock %}
+

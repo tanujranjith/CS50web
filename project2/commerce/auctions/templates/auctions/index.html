@@ -1,0 +1,53 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+
+<form action="specificcatagory" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        Choose A Listing Category
+        <select class="form-control" name="Categorys">
+            {%  for option in Category %}
+                <option value="{{option}}">{{option}}</option>\
+            {% endfor %}
+        </select>
+    </div>
+<button type = "submit">Add page filter</button>
+</form>
+
+
+
+
+<table>
+        {% for listing in listings %}
+        <th>
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="{{ listing.Imageurl }}" alt="Image of item">
+
+                <div class="card-body">
+                    
+                    <h5 class="card-title">{{ listing.Listingname }}</h5>
+
+                    <h5 class="card-title">Current Price: ${{  listing.Startbid.amount }}</h5>
+
+                    <p class="card-text">{{ listing.Description }}.</p>
+
+                    <a href="{% url 'learnmore' id=listing.id%}" >Learn More</a> 
+            </div>
+        </th>
+        {% endfor %}
+    </table>
+        
+
+
+
+
+
+
+
+
+
+{% endblock %}
+

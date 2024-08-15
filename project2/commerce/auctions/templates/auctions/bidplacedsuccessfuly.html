@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bid Placed Successfully</title>
+</head>
+<body>
+    <h1>Bid Placed Successfully!</h1>
+    <p>Your Bid Has Been Placed Successfully</p>
+    <a href="{% url 'index' %}">Return to Home</a>
+</body>
+</html>
+{% endblock %}

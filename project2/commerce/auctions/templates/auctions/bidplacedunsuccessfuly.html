@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bid Placed Unsuccessfully</title>
+</head>
+<body>
+    <h1>Bid Placed Unsuccessfully</h1>
+    <p>Your Bid Cant Be Placed Because The Bid Amount Was Under The Exsiting Price</p>
+    <a href="{% url 'index' %}">Return to Home</a>
+</body>
+</html>
+{% endblock %}
