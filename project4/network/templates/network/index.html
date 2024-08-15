@@ -1,0 +1,131 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <script>
+
+      function getCookie(name){
+        value = `; ${document.cookie}`;
+        parts = value.split(`; ${name}=`);
+        if(parts.length == 2) return parts.pop().split(';').shift();
+      }
+
+      function submitHandler(id) {
+        
+        editvalue = document.getElementById(`textarea_${id}`).value;
+        content = document.getElementById(`content_${id}`);
+        modal = document.getElementById(`modal_edit_post_${id}`);
+
+        fetch(`/editpage/${id}`,{
+          method:"POST",
+          headers: {"Content-type": "application/json", "X-CSRFToken": getCookie("csrftoken")},
+          body: JSON.stringify({
+            content:editvalue
+          })
+        })
+        .then(response => response.json())
+        .then(result =>{
+          console.log(result.data);
+          content.innerHTML = result.data;
+        })
+
+      }
+
+      function likeHandler(id, wholikedpost){
+        btn = document.getElementById(`${id}`);
+
+        btn.classList.remove('fa-thumbs-up')
+        btn.classList.remove('fa-thumbs-down')
+
+
+
+        if(wholikedpost.indexOf(id) >= 0){
+          liked = true;
+        } else {
+          liked = false;
+        } 
+
+        if(liked === true){
+            fetch(`/removelike/${id}`)
+            .then(response => response.json)
+            .then(result => {
+                btn.classList.add('fa-thumbs-up')
+            })
+
+        } else{
+            fetch(`/addlike/${id}`)
+            .then(response => response.json)
+            .then(result => {
+                btn.classList.add('fa-thumbs-down')
+            })
+        }
+        liked = !liked
+
+
+      }
+    </script>
+
+    {% if user.is_authenticated %}
+        <h3>Create a new post</h3>
+        <form action="{% url 'createapost' %}" method="POST">
+            {% csrf_token %}
+            <textarea name="postcontent" rows="4" cols="120"></textarea>
+            <br>
+            <input type="submit" value="POST"/>
+            <hr>
+        </form>
+    {% endif %}
+
+    <div>
+        {% for post in pagepost %}
+            <h6><a href="{% url 'viewprofile' user_id=post.user.id %}">{{ post.user }}</a></h6>
+            <h6 id="content_{{ post.id }}">Content: {{ post.postcontent }}</h6>
+            <h6>Date: {{ post.datecreated }}</h6>
+
+
+
+
+            
+            
+            {% if user == post.user %}
+                <button data-toggle="modal" data-target="#editmodal_{{ post.id }}">Edit Your Post</button>
+
+                <div class="modal" id="editmodal_{{ post.id }}" aria-labelledby="editmodal_{{ post.id }}_label" aria-hidden="true" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Edit Post</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                        </div>
+                        <div class="modal-body">
+                          <textarea rows="10" id="textarea_{{ post.id }}" class="form-control" name="Editcontent">{{ post.postcontent }}</textarea>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" onclick="submitHandler({{post.id}})">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              {% else  %}
+                {% if post.id in wholikedpost  %}  
+                <button class="btn btn-info fa fa-thumbs-down" id="{{ post.id }}" onclick="likeHandler({{post.id}}, {{wholikedpost}})"></button>
+                {% else  %}
+                <button class="btn btn-info fa fa-thumbs-up" id="{{ post.id }}" onclick="likeHandler({{post.id}}, {{wholikedpost}})"></button>
+                {% endif  %}
+                
+              {% endif %}
+            <hr>
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+        {% if pagepost.has_previous %}
+            <li class="page-item"><a class="page-link" href="?postindex={{ pagepost.previous_page_number }}">&lt;&lt; Previous Page</a></li>
+        {% endif %}
+        {% if pagepost.has_next %}
+            <li class="page-item"><a class="page-link" href="?postindex={{ pagepost.next_page_number }}">Next Page &gt;&gt;</a></li>
+        {% endif %}
+        </ul>
+    </nav>
+{% endblock %}

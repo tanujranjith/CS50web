@@ -1,0 +1,40 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    <h2>Following Posts</h2>
+
+    {% if user.is_authenticated  %}
+        <h3>Create a new post</h3>
+        <form action="{% url 'createapost'  %}" method="POST">
+            {% csrf_token %}
+            <textarea name="postcontent" row="4" cols="120"></textarea>
+            <br>
+            <input type="submit" value="POST"/>
+            <hr>
+
+        </form>
+    {% endif  %}
+
+        {% for post in pagepost  %}
+
+        <h6><a href="{% url 'viewprofile' user_id=post.user.id %}">{{post.user}}</a></h6>
+        <h6>Content: {{post.postcontent}}</h6>
+        <h6>Date: {{post.datecreated}}</h6>
+        <h6>Likes: {{post.likes}}</h6>
+        <hr>
+
+        {% endfor %}
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+            {% if pagepost.has_previous %}
+                <li class="page-item"><a class="page-link" href="?postindex={{ pagepost.previous_page_number }}">&lt;&lt; Previous Page</a></li>
+            {% endif %}
+            {% if pagepost.has_next %}
+                <li class="page-item"><a class="page-link" href="?postindex={{ pagepost.next_page_number }}">Next Page &gt;&gt;</a></li>
+            {% endif %}
+            </ul>
+          </nav>
+
+{% endblock %}
