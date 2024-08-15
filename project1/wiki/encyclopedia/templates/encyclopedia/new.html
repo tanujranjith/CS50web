@@ -1,0 +1,36 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    New Wiki Page
+{% endblock %}
+
+
+{% block body %}
+    <h1>New Wiki Page</h1>
+    <style>
+      #title{
+        max-width: 800px;
+        max-height: 30px;
+      }
+      #content{
+        max-width: 800px;
+        max-height: 200px;
+      }
+    </style>
+    
+    <form action="{% url 'new_page' %}" method="POST">
+      {% csrf_token %}
+      <div>
+        Page Title
+      </div>
+      <textarea id="title" name="title" ></textarea>
+      <br>
+      <div>
+        Page Content
+      </div>
+      <textarea id="content" name="content"  ></textarea>
+      <br>
+      <input type="submit" value="Submit a new page" >
+    </form>
+
+{% endblock %}

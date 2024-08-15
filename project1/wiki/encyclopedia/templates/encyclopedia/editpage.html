@@ -1,0 +1,36 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+Edit a wiki page
+{% endblock %}
+
+
+{% block body %}
+    <h1>Edit wiki page</h1>
+    <style>
+      #title{
+        max-width: 800px;
+        max-height: 30px;
+      }
+      #content{
+        max-width: 800px;
+        max-height: 200px;
+      }
+    </style>
+    
+    <form action="{% url 'savechangeedit' %}" method="POST">
+      {% csrf_token %}
+      <div>
+        Page Title
+      </div>
+      <textarea id="title" name="title" >{{pagename}}</textarea>
+      <br>
+      <div>
+        Page Content
+      </div>
+      <textarea id="content" name="content"  >{{pagecontent}}</textarea>
+      <br>  
+      <input type="submit" value="Submit your changes to the page" >
+    </form>
+
+{% endblock %}
