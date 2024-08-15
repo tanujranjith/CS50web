@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Find My Pet{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    <style>
+        .btn-blue {
+            background-color: #0db675; /* Blue background */
+            border: none; /* Remove default border */
+            color: #fff; /* White text */
+            margin: 5px; /* Margin between buttons */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        }
+
+        .btn-blue:hover {
+            background-color: #096a45; /* Darker blue on hover */
+            color: #fff; /* Ensure text remains white */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+
+        .btn-blue:focus, .btn-blue:active {
+            box-shadow: none; /* Remove focus outline */
+            outline: none; /* Remove default focus outline */
+        }
+
+        .navbar-nav .nav-link {
+            padding: 0; /* Remove padding to make links appear like buttons */
+        }
+
+        .navbar-nav .btn {
+            padding: 10px 20px; /* Adjust padding for button-like appearance */
+            margin: 5px; /* Space between buttons */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'index' %}">Find My Pet    <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Socialising" style="width: 30px; height: 30px;"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="btn btn-blue" href="{% url 'index' %}">Lost Pets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-blue" href="{% url 'newlisting' %}">Report A Lost Pet</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="btn btn-blue" href="{% url 'logout' %}">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-blue" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-blue" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% if user.is_authenticated %}
+            <div class="alert alert-info" role="alert">
+                Signed in as <strong>{{ user.username }}</strong>.
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                Not signed in.
+            </div>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    {% block body %}
+    {% endblock %}
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zyz3Ldb/wN5ES93d1uD3c2xJXaQ1ziZJjlp7StGz8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9+z/5flB1KHL5t24QuD9WT5YTWnhS/S06FY/sM5aC1RCCkItPZ63" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-7+5e0b5N6PpBNC1lG/Jr8Md9tXnH8lF5L9M7XKdx3R3aAAw5XTdckH4QQb07j04" crossorigin="anonymous"></script>
+</body>
+</html>

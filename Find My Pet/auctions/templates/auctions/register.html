@@ -1,0 +1,123 @@
+
+{% block body %}
+
+<style>
+
+    /* Reset some basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #0d3905, #055655);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.login-box, .register-box {
+    width: 300px;
+    padding: 40px;
+    position: relative;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.login-box h2, .register-box h2 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+    font-size: 24px;
+}
+
+.textbox {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.textbox input {
+    width: 100%;
+    padding: 10px;
+    background: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: #2575fc;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #6a11cb;
+}
+
+.signup, .signin {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+.signup a, .signin a {
+    color: #2575fc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup a:hover, .signin a:hover {
+    text-decoration: underline;
+}
+
+</style>
+
+
+    <div class="container">
+        <div class="register-box">
+            <h2>Register</h2>
+            
+            <form action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+
+                <div class="textbox">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="textbox">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" name="confirmation" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <p class="signin">Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
+            </form>
+        </div>
+    </div>
+
+
+
+{% endblock %}

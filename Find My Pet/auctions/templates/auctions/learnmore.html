@@ -1,0 +1,121 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<style>
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa; /* Light background color */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.card-title {
+    font-size: 1.25em; /* Slightly smaller title */
+    margin-bottom: 15px;
+    color: #007bff; /* Accent color */
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Slightly smaller border radius */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 15px; /* Reduced padding */
+}
+
+.card-text {
+    font-size: 0.9em; /* Slightly smaller text */
+    color: #555;
+}
+
+.card-title {
+    font-size: 1.1em; /* Slightly smaller card title */
+    margin: 10px 0;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.form-control {
+    width: calc(100% - 22px); /* Full-width input */
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px; /* Smaller border radius */
+}
+
+button {
+    padding: 8px 12px; /* Reduced padding */
+    border: none;
+    border-radius: 4px;
+    background-color: #0db675;
+    color: #fff;
+    font-size: 0.9em; /* Smaller font size */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #096a45;
+}
+
+h2, h4 {
+    margin-top: 15px; /* Reduced margin */
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+</style>
+
+<div class="container">
+    <h3 class="card-title">Pet Name: {{ listing.Listingname }}</h3>
+
+    <div class="card" style="width: 100%; max-width: 600px;">
+        <img class="card-img-top" src="{{ listing.Imageurl }}" alt="Card image cap">
+
+        <div class="card-body">
+            <h4 class="card-text">{{ listing.Description }}</h4>
+            <h5 class="card-title">Reward: ${{ listing.Startbid.amount }}</h5>
+        </div>
+    </div>
+
+
+
+
+    <h2>Place A Comment!</h2>
+    {% if user.is_authenticated %}
+        <form action="{% url 'placeacomment' id=listing.id %}" method="POST" class="form-group">
+            {% csrf_token %}
+            <input class="form-control" type="text" name="newcommentsplaced" placeholder="Place A Comment!">
+            <button type="submit">Submit Comment!</button>
+        </form>
+    {% endif %}
+
+    <h4>Existing Comments</h4>
+    <ul>
+        {% for comment in totalcomments %}
+            <li>{{ comment.content }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
